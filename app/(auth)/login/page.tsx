@@ -6,7 +6,8 @@ import Link from "next/link";
 
 export default function LoginPage() {
   const { login } = useAuth();
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [form, setForm] = useState({ identifier: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -31,72 +32,82 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-green-700 flex items-center justify-center relative overflow-hidden">
+    <div className="min-h-screen bg-gray-950 flex items-center justify-center px-4">
+      <div className="w-full max-w-md bg-gray-900 border border-gray-800 rounded-2xl p-10 shadow-2xl">
 
-      {/* Blob shapes */}
-      <div className="absolute -bottom-40 -left-40 w-[520px] h-[520px] bg-white/[0.07] rounded-[60%_40%_70%_30%/50%_60%_40%_50%]" />
-      <div className="absolute -top-28 -right-20 w-96 h-96 bg-white/[0.07] rounded-[40%_60%_30%_70%/60%_40%_60%_40%]" />
-      <div className="absolute top-[40%] right-[8%] w-48 h-48 bg-white/[0.05] rounded-[50%_50%_40%_60%/60%_40%_60%_40%]" />
-
-      {/* Card */}
-      <div className="relative z-10 w-full max-w-lg mx-6 px-8 py-16 bg-white/[0.08] backdrop-blur-sm rounded-3xl border border-white/15 shadow-2xl">
-
-        {/* Header */}
-        <div className="flex flex-col items-center mb-10">
-          <div className="w-20 h-20 bg-white/15 border border-white/30 rounded-3xl flex items-center justify-center text-4xl mb-5 shadow-lg">
-            💰
+        <div className="mb-8 text-center">
+          <div className="inline-flex items-center justify-center w-14 h-14 bg-green-600 rounded-2xl mb-5">
+            <span className="text-3xl">💰</span>
           </div>
-          <h1 className="text-white text-2xl font-bold tracking-tight">FinTrack</h1>
-          <p className="text-white/60 text-sm mt-1.5 font-light">Sign in to your account</p>
+          <h1 className="text-2xl font-bold text-white">FinTrack</h1>
+          <p className="text-gray-400 text-sm mt-1">Sign in to your account</p>
         </div>
 
         {error && (
-          <div className="mb-6 px-4 py-3 rounded-xl bg-red-500/20 border border-red-400/40 text-red-200 text-sm">
+          <div className="mb-6 px-4 py-3 rounded-lg bg-red-900/30 border border-red-800 text-red-400 text-sm">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="relative">
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 text-base">👤</span>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              Email or username
+            </label>
             <input
-              type="email"
-              value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
-              placeholder="EMAIL"
+              type="text"
+              value={form.identifier}
+              onChange={(e) => setForm({ ...form, identifier: e.target.value })}
+              placeholder="demo@fintrack.com or Demo User"
               required
-              className="w-full pl-11 pr-4 py-4 bg-white/10 border border-white/20 rounded-xl text-white text-sm placeholder:text-white/40 placeholder:text-xs placeholder:tracking-widest focus:outline-none focus:bg-white/15 focus:border-white/50 transition"
+              className="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white placeholder:text-gray-500 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 transition text-sm"
             />
           </div>
 
-          <div className="relative">
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 text-base">🔒</span>
-            <input
-              type="password"
-              value={form.password}
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
-              placeholder="PASSWORD"
-              required
-              className="w-full pl-11 pr-4 py-4 bg-white/10 border border-white/20 rounded-xl text-white text-sm placeholder:text-white/40 placeholder:text-xs placeholder:tracking-widest focus:outline-none focus:bg-white/15 focus:border-white/50 transition"
-            />
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              Password
+            </label>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                placeholder="••••••••"
+                required
+                className="w-full px-4 py-3 pr-12 rounded-lg bg-gray-800 border border-gray-700 text-white placeholder:text-gray-500 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 transition text-sm"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition"
+              >
+                {showPassword ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 4.411m0 0L21 21" />
+                  </svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                )}
+              </button>
+            </div>
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-4 mt-2 bg-white text-green-700 rounded-xl text-xs font-bold tracking-widest uppercase hover:opacity-90 hover:-translate-y-0.5 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full py-3 rounded-lg bg-green-600 hover:bg-green-700 text-white font-semibold text-sm transition disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            {loading ? "Signing in..." : "Login"}
+            {loading ? "Signing in..." : "Sign in"}
           </button>
         </form>
 
-        <a href="#" className="block text-center mt-5 text-sm text-white/45 hover:text-white/75 transition">
-          Forgot password?
-        </a>
-
-        <p className="text-center text-sm text-white/50 mt-4">
-          Don&apos;t have an account?{" "}
-          <Link href="/register" className="text-white font-semibold underline underline-offset-2 hover:text-white/80 transition">
+        <p className="text-center text-sm text-gray-500 mt-8">
+          Don't have an account?{" "}
+          <Link href="/register" className="text-green-500 hover:text-green-400 font-medium transition">
             Create one
           </Link>
         </p>

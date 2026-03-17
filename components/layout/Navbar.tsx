@@ -1,11 +1,9 @@
 "use client";
 
 import { useAuth } from "@/hooks/useAuth";
-import { useTheme } from "@/hooks/useTheme";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
-  const { isDark, toggleTheme } = useTheme();
 
   return (
     <header className="h-16 bg-gray-900 border-b border-gray-800 flex items-center justify-between px-6">
@@ -20,15 +18,7 @@ export default function Navbar() {
       </div>
 
       <div className="flex items-center gap-3">
-        <button
-          onClick={toggleTheme}
-          className="w-9 h-9 rounded-lg flex items-center justify-center bg-gray-800 hover:bg-gray-700 transition text-base"
-        >
-          {isDark ? "☀️" : "🌙"}
-        </button>
-
         <div className="w-px h-5 bg-gray-700" />
-
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-lg bg-green-600 flex items-center justify-center text-white text-sm font-bold">
             {user?.name?.charAt(0).toUpperCase()}

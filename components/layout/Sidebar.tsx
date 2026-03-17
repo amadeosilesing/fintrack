@@ -17,7 +17,7 @@ export default function Sidebar() {
     <aside className="w-64 h-screen fixed left-0 top-0 bg-gray-900 border-r border-gray-800 flex flex-col">
 
       <div className="px-6 h-16 flex items-center gap-3 border-b border-gray-800">
-        <div className="w-8 h-8 rounded-lg bg-green-600 flex items-center justify-center text-base">
+        <div className="w-8 h-8 rounded-lg bg-green-600 flex items-center justify-center">
           💰
         </div>
         <span className="text-base font-semibold text-white">FinTrack</span>
