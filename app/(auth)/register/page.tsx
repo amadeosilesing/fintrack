@@ -14,21 +14,14 @@ export default function RegisterPage() {
     e.preventDefault();
     setError("");
     setLoading(true);
-
     try {
       const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-
       const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error || "Something went wrong");
-        return;
-      }
-
+      if (!res.ok) { setError(data.error || "Something went wrong"); return; }
       login(data.token, data.user);
     } catch {
       setError("Something went wrong");
@@ -38,84 +31,80 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[var(--background)] px-4">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-green-700 flex items-center justify-center relative overflow-hidden">
 
-        {/* Logo */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-[var(--primary)] mb-4">
-            <span className="text-2xl">💰</span>
+      {/* Blob shapes */}
+      <div className="absolute -bottom-40 -left-40 w-[520px] h-[520px] bg-white/[0.07] rounded-[60%_40%_70%_30%/50%_60%_40%_50%]" />
+      <div className="absolute -top-28 -right-20 w-96 h-96 bg-white/[0.07] rounded-[40%_60%_30%_70%/60%_40%_60%_40%]" />
+      <div className="absolute top-[40%] right-[8%] w-48 h-48 bg-white/[0.05] rounded-[50%_50%_40%_60%/60%_40%_60%_40%]" />
+
+      {/* Card */}
+      <div className="relative z-10 w-full max-w-lg mx-6 px-8 py-16 bg-white/[0.08] backdrop-blur-sm rounded-3xl border border-white/15 shadow-2xl">
+
+        {/* Header */}
+        <div className="flex flex-col items-center mb-10">
+          <div className="w-20 h-20 bg-white/15 border border-white/30 rounded-3xl flex items-center justify-center text-4xl mb-5 shadow-lg">
+            💰
           </div>
-          <h1 className="text-2xl font-bold text-[var(--foreground)]">FinTrack</h1>
-          <p className="text-[var(--muted)] mt-1">Create your account</p>
+          <h1 className="text-white text-2xl font-bold tracking-tight">FinTrack</h1>
+          <p className="text-white/60 text-sm mt-1.5 font-light">Create your account</p>
         </div>
 
-        {/* Card */}
-        <div className="bg-[var(--card)] border border-[var(--card-border)] rounded-2xl p-8 shadow-sm">
-          <form onSubmit={handleSubmit} className="space-y-5">
+        {error && (
+          <div className="mb-6 px-4 py-3 rounded-xl bg-red-500/20 border border-red-400/40 text-red-200 text-sm">
+            {error}
+          </div>
+        )}
 
-            {error && (
-              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-[var(--danger)] text-sm rounded-lg px-4 py-3">
-                {error}
-              </div>
-            )}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="relative">
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 text-base">✏️</span>
+            <input
+              type="text"
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              placeholder="FULL NAME"
+              required
+              className="w-full pl-11 pr-4 py-4 bg-white/10 border border-white/20 rounded-xl text-white text-sm placeholder:text-white/40 placeholder:text-xs placeholder:tracking-widest focus:outline-none focus:bg-white/15 focus:border-white/50 transition"
+            />
+          </div>
 
-            <div className="space-y-1.5">
-              <label className="text-sm font-medium text-[var(--foreground)]">
-                Name
-              </label>
-              <input
-                type="text"
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                placeholder="John Doe"
-                required
-                className="w-full px-4 py-2.5 rounded-lg border border-[var(--card-border)] bg-[var(--background)] text-[var(--foreground)] placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition"
-              />
-            </div>
+          <div className="relative">
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 text-base">👤</span>
+            <input
+              type="email"
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              placeholder="EMAIL"
+              required
+              className="w-full pl-11 pr-4 py-4 bg-white/10 border border-white/20 rounded-xl text-white text-sm placeholder:text-white/40 placeholder:text-xs placeholder:tracking-widest focus:outline-none focus:bg-white/15 focus:border-white/50 transition"
+            />
+          </div>
 
-            <div className="space-y-1.5">
-              <label className="text-sm font-medium text-[var(--foreground)]">
-                Email
-              </label>
-              <input
-                type="email"
-                value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
-                placeholder="john@example.com"
-                required
-                className="w-full px-4 py-2.5 rounded-lg border border-[var(--card-border)] bg-[var(--background)] text-[var(--foreground)] placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition"
-              />
-            </div>
+          <div className="relative">
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 text-base">🔒</span>
+            <input
+              type="password"
+              value={form.password}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
+              placeholder="PASSWORD"
+              required
+              className="w-full pl-11 pr-4 py-4 bg-white/10 border border-white/20 rounded-xl text-white text-sm placeholder:text-white/40 placeholder:text-xs placeholder:tracking-widest focus:outline-none focus:bg-white/15 focus:border-white/50 transition"
+            />
+          </div>
 
-            <div className="space-y-1.5">
-              <label className="text-sm font-medium text-[var(--foreground)]">
-                Password
-              </label>
-              <input
-                type="password"
-                value={form.password}
-                onChange={(e) => setForm({ ...form, password: e.target.value })}
-                placeholder="••••••••"
-                required
-                className="w-full px-4 py-2.5 rounded-lg border border-[var(--card-border)] bg-[var(--background)] text-[var(--foreground)] placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition"
-              />
-            </div>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-4 mt-2 bg-white text-green-700 rounded-xl text-xs font-bold tracking-widest uppercase hover:opacity-90 hover:-translate-y-0.5 transition disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? "Creating account..." : "Create Account"}
+          </button>
+        </form>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-2.5 rounded-lg bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white font-medium transition disabled:opacity-60 disabled:cursor-not-allowed"
-            >
-              {loading ? "Creating account..." : "Create account"}
-            </button>
-
-          </form>
-        </div>
-
-        <p className="text-center text-sm text-[var(--muted)] mt-6">
+        <p className="text-center text-sm text-white/50 mt-6">
           Already have an account?{" "}
-          <Link href="/login" className="text-[var(--primary)] hover:underline font-medium">
+          <Link href="/login" className="text-white font-semibold underline underline-offset-2 hover:text-white/80 transition">
             Sign in
           </Link>
         </p>
