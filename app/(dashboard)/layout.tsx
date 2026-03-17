@@ -16,7 +16,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-950">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950">
         <div className="w-8 h-8 border-4 border-green-600 border-t-transparent rounded-full animate-spin" />
       </div>
     );
@@ -25,7 +25,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-gray-950">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
       <Sidebar />
       <div className="ml-64 flex flex-col min-h-screen">
         <Navbar />
