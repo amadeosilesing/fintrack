@@ -2,28 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
+import type { StatisticsData } from "@/types";
 import ExpensesByCategory from "@/components/statistics/ExpensesByCategory";
 import MonthlyChart from "@/components/statistics/MonthlyChart";
 import BalanceChart from "@/components/statistics/BalanceChart";
-
-interface CategoryData {
-  name: string;
-  icon: string;
-  color: string;
-  total: number;
-}
-
-interface MonthlyData {
-  month: string;
-  income: number;
-  expense: number;
-  balance: number;
-}
-
-interface StatisticsData {
-  byCategory: CategoryData[];
-  monthly: MonthlyData[];
-}
 
 const MONTHS = [
   "January", "February", "March", "April", "May", "June",
@@ -35,14 +17,14 @@ export default function StatisticsPage() {
   const [data, setData] = useState<StatisticsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [month, setMonth] = useState(new Date().getMonth() + 1);
-  const [year, setYear] = useState(new Date().getFullYear());
-
-  const headers = { Authorization: `Bearer ${token}` };
+  const [year, setYear]   = useState(new Date().getFullYear());
 
   useEffect(() => {
     if (!token) return;
     setLoading(true);
-    fetch(`/api/statistics?year=${year}&month=${month}`, { headers })
+    fetch(`/api/statistics?year=${year}&month=${month}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
       .then((r) => r.json())
       .then((d) => { setData(d); setLoading(false); });
   }, [token, month, year]);
@@ -52,14 +34,11 @@ export default function StatisticsPage() {
   return (
     <div className="space-y-6">
 
-      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Statistics</h1>
           <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">Your financial insights</p>
         </div>
-
-        {/* Month/Year selector */}
         <div className="flex items-center gap-2">
           <select
             value={month}
@@ -88,19 +67,14 @@ export default function StatisticsPage() {
         </div>
       ) : (
         <>
-          {/* Summary */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-5">
               <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Total Expenses</p>
-              <p className="text-2xl font-bold text-red-500 dark:text-red-400">
-                ${totalExpenses.toFixed(2)}
-              </p>
+              <p className="text-2xl font-bold text-red-500 dark:text-red-400">${totalExpenses.toFixed(2)}</p>
             </div>
             <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-5">
               <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Categories used</p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                {data?.byCategory.length ?? 0}
-              </p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">{data?.byCategory.length ?? 0}</p>
             </div>
             <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-5">
               <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Avg monthly balance</p>
@@ -112,7 +86,6 @@ export default function StatisticsPage() {
             </div>
           </div>
 
-          {/* Charts */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <ExpensesByCategory data={data?.byCategory ?? []} />
             <MonthlyChart data={data?.monthly ?? []} />

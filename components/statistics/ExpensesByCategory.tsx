@@ -1,16 +1,10 @@
 "use client";
 
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
-
-interface CategoryData {
-  name: string;
-  icon: string;
-  color: string;
-  total: number;
-}
+import type { CategoryStat } from "@/types";
 
 interface Props {
-  data: CategoryData[];
+  data: CategoryStat[];
 }
 
 function formatCurrency(amount: number) {
@@ -52,7 +46,7 @@ export default function ExpensesByCategory({ data }: Props) {
             ))}
           </Pie>
           <Tooltip
-          formatter={(value) => [formatCurrency(Number(value)), ""]}
+            formatter={(value) => [formatCurrency(Number(value)), ""]}
             contentStyle={{
               backgroundColor: "#111827",
               border: "1px solid #374151",

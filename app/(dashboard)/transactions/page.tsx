@@ -2,26 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
+import type { Category, Transaction } from "@/types";
 import TransactionItem from "@/components/transactions/TransactionItem";
 import TransactionModal from "@/components/transactions/TransactionModal";
 import DeleteModal from "@/components/ui/DeleteModal";
-
-interface Category {
-  id: string;
-  name: string;
-  icon: string;
-  color: string;
-}
-
-interface Transaction {
-  id: string;
-  title: string;
-  amount: string;
-  type: "income" | "expense";
-  date: string;
-  notes: string | null;
-  category: Category | null;
-}
 
 function formatCurrency(amount: number) {
   return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(amount);
@@ -45,52 +29,29 @@ export default function TransactionsPage() {
   const fetchData = async () => {
     const [t, c] = await Promise.all([
       fetch("/api/transactions", { headers }).then((r) => r.json()),
-      fetch("/api/categories", { headers }).then((r) => r.json()),
+      fetch("/api/categories",  { headers }).then((r) => r.json()),
     ]);
     setTransactions(t);
     setCategories(c);
     setLoading(false);
   };
 
-  useEffect(() => {
-    if (!token) return;
-    fetchData();
-  }, [token]);
+  useEffect(() => { if (!token) return; fetchData(); }, [token]);
 
-  const openCreate = () => {
-    setEditing(null);
-    setShowModal(true);
-  };
+  const openCreate = () => { setEditing(null); setShowModal(true); };
+  const openEdit   = (t: Transaction) => { setEditing(t); setShowModal(true); };
+  const openDelete = (t: Transaction) => { setDeleting(t); setShowDelete(true); };
 
-  const openEdit = (t: Transaction) => {
-    setEditing(t);
-    setShowModal(true);
-  };
-
-  const openDelete = (t: Transaction) => {
-    setDeleting(t);
-    setShowDelete(true);
-  };
-
-  const handleSave = async (form: {
-    title: string;
-    amount: string;
-    type: "income" | "expense";
-    categoryId: string;
-    date: string;
-    notes: string;
-  }) => {
+  const handleSave = async (form: { title: string; amount: string; type: "income" | "expense"; categoryId: string; date: string; notes: string; }) => {
     setSaving(true);
     try {
-      const url = editing ? `/api/transactions/${editing.id}` : "/api/transactions";
+      const url    = editing ? `/api/transactions/${editing.id}` : "/api/transactions";
       const method = editing ? "PUT" : "POST";
-      const res = await fetch(url, { method, headers, body: JSON.stringify(form) });
+      const res    = await fetch(url, { method, headers, body: JSON.stringify(form) });
       if (!res.ok) return;
       await fetchData();
       setShowModal(false);
-    } finally {
-      setSaving(false);
-    }
+    } finally { setSaving(false); }
   };
 
   const handleDelete = async () => {
@@ -100,12 +61,10 @@ export default function TransactionsPage() {
       await fetch(`/api/transactions/${deleting.id}`, { method: "DELETE", headers });
       setTransactions((prev) => prev.filter((t) => t.id !== deleting.id));
       setShowDelete(false);
-    } finally {
-      setDeletingLoading(false);
-    }
+    } finally { setDeletingLoading(false); }
   };
 
-  const filtered = transactions.filter((t) => filter === "all" || t.type === filter);
+  const filtered     = transactions.filter((t) => filter === "all" || t.type === filter);
   const totalIncome  = transactions.filter((t) => t.type === "income").reduce((s, t) => s + Number(t.amount), 0);
   const totalExpense = transactions.filter((t) => t.type === "expense").reduce((s, t) => s + Number(t.amount), 0);
 
@@ -120,21 +79,16 @@ export default function TransactionsPage() {
   return (
     <div className="space-y-6">
 
-      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Transactions</h1>
           <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">Manage your income and expenses</p>
         </div>
-        <button
-          onClick={openCreate}
-          className="flex items-center gap-2 px-4 py-2.5 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-xl transition"
-        >
+        <button onClick={openCreate} className="flex items-center gap-2 px-4 py-2.5 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-xl transition">
           <span className="text-lg">+</span> Add Transaction
         </button>
       </div>
 
-      {/* Summary */}
       <div className="grid grid-cols-2 gap-4">
         <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-5">
           <p className="text-gray-500 dark:text-gray-400 text-xs font-medium mb-1">Total Income</p>
@@ -146,7 +100,6 @@ export default function TransactionsPage() {
         </div>
       </div>
 
-      {/* Filter */}
       <div className="flex gap-2">
         {(["all", "income", "expense"] as const).map((f) => (
           <button
@@ -163,7 +116,6 @@ export default function TransactionsPage() {
         ))}
       </div>
 
-      {/* List */}
       <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl overflow-hidden">
         {filtered.length === 0 ? (
           <div className="text-center py-16">
@@ -176,25 +128,14 @@ export default function TransactionsPage() {
         ) : (
           <div className="divide-y divide-gray-100 dark:divide-gray-800">
             {filtered.map((t) => (
-              <TransactionItem
-                key={t.id}
-                transaction={t}
-                onEdit={openEdit}
-                onDelete={openDelete}
-              />
+              <TransactionItem key={t.id} transaction={t} onEdit={openEdit} onDelete={openDelete} />
             ))}
           </div>
         )}
       </div>
 
       {showModal && (
-        <TransactionModal
-          editing={editing}
-          categories={categories}
-          onSave={handleSave}
-          onClose={() => setShowModal(false)}
-          saving={saving}
-        />
+        <TransactionModal editing={editing} categories={categories} onSave={handleSave} onClose={() => setShowModal(false)} saving={saving} />
       )}
 
       {showDelete && deleting && (

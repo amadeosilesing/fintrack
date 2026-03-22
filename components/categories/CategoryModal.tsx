@@ -1,13 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-
-interface Category {
-  id: string;
-  name: string;
-  icon: string;
-  color: string;
-}
+import type { Category } from "@/types";
 
 interface Props {
   editing: Category | null;
@@ -47,17 +41,13 @@ export default function CategoryModal({ editing, onSave, onClose, saving }: Prop
           <h2 className="text-lg font-bold text-gray-900 dark:text-white">
             {editing ? "Edit Category" : "Add Category"}
           </h2>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition text-xl"
-          >
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition text-xl">
             ✕
           </button>
         </div>
 
         <div className="space-y-5">
 
-          {/* Preview */}
           <div className="flex items-center justify-center">
             <div
               className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl"
@@ -67,7 +57,6 @@ export default function CategoryModal({ editing, onSave, onClose, saving }: Prop
             </div>
           </div>
 
-          {/* Name */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Name</label>
             <input
@@ -79,7 +68,6 @@ export default function CategoryModal({ editing, onSave, onClose, saving }: Prop
             />
           </div>
 
-          {/* Icon picker */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Icon</label>
             <div className="grid grid-cols-10 gap-1.5">
@@ -99,7 +87,6 @@ export default function CategoryModal({ editing, onSave, onClose, saving }: Prop
             </div>
           </div>
 
-          {/* Color picker */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Color</label>
             <div className="flex flex-wrap gap-2">
@@ -116,7 +103,6 @@ export default function CategoryModal({ editing, onSave, onClose, saving }: Prop
             </div>
           </div>
 
-          {/* Actions */}
           <div className="flex gap-3 pt-2">
             <button
               onClick={onClose}

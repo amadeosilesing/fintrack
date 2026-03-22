@@ -4,11 +4,7 @@ import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer
 } from "recharts";
-
-interface MonthlyData {
-  month: string;
-  balance: number;
-}
+import type { MonthlyData } from "@/types";
 
 interface Props {
   data: MonthlyData[];
@@ -32,21 +28,11 @@ export default function BalanceChart({ data }: Props) {
             </linearGradient>
           </defs>
           <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" vertical={false} />
-          <XAxis
-            dataKey="month"
-            tick={{ fontSize: 12, fill: "#6b7280" }}
-            axisLine={false}
-            tickLine={false}
-          />
-          <YAxis
-            tick={{ fontSize: 11, fill: "#6b7280" }}
-            axisLine={false}
-            tickLine={false}
-            tickFormatter={(v) => `$${v}`}
-          />
+          <XAxis dataKey="month" tick={{ fontSize: 12, fill: "#6b7280" }} axisLine={false} tickLine={false} />
+          <YAxis tick={{ fontSize: 11, fill: "#6b7280" }} axisLine={false} tickLine={false} tickFormatter={(v) => `$${v}`} />
           <Tooltip
-formatter={(value) => [formatCurrency(Number(value)), ""]}
-contentStyle={{
+            formatter={(value) => [formatCurrency(Number(value)), ""]}
+            contentStyle={{
               backgroundColor: "#111827",
               border: "1px solid #374151",
               borderRadius: "12px",
@@ -54,14 +40,7 @@ contentStyle={{
               fontSize: "12px",
             }}
           />
-          <Area
-            type="monotone"
-            dataKey="balance"
-            name="Balance"
-            stroke="#16a34a"
-            strokeWidth={2}
-            fill="url(#balanceGradient)"
-          />
+          <Area type="monotone" dataKey="balance" name="Balance" stroke="#16a34a" strokeWidth={2} fill="url(#balanceGradient)" />
         </AreaChart>
       </ResponsiveContainer>
     </div>

@@ -2,22 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
-
-interface Transaction {
-  id: string;
-  title: string;
-  amount: string;
-  type: "income" | "expense";
-  date: string;
-  category: { name: string; icon: string; color: string } | null;
-}
-
-interface DashboardData {
-  balance: number;
-  income: number;
-  expense: number;
-  recent: Transaction[];
-}
+import type { DashboardData } from "@/types";
 
 function formatCurrency(amount: number) {
   return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(amount);
@@ -34,9 +19,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (!token) return;
-    fetch("/api/dashboard", {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+    fetch("/api/dashboard", { headers: { Authorization: `Bearer ${token}` } })
       .then((r) => r.json())
       .then((d) => { setData(d); setLoading(false); })
       .catch(() => setLoading(false));
@@ -53,7 +36,6 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
 
-      {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
         <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
@@ -61,48 +43,35 @@ export default function DashboardPage() {
         </p>
       </div>
 
-      {/* Stats cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-
-        {/* Balance */}
         <div className="bg-green-600 rounded-2xl p-6 text-white">
           <div className="flex items-center justify-between mb-4">
             <p className="text-green-100 text-sm font-medium">Total Balance</p>
-            <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center text-xl">
-              💰
-            </div>
+            <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center text-xl">💰</div>
           </div>
           <p className="text-3xl font-bold">{formatCurrency(data?.balance ?? 0)}</p>
           <p className="text-green-100 text-xs mt-2">Current month</p>
         </div>
 
-        {/* Income */}
         <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-6">
           <div className="flex items-center justify-between mb-4">
             <p className="text-gray-500 dark:text-gray-400 text-sm font-medium">Total Income</p>
-            <div className="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center text-xl">
-              📈
-            </div>
+            <div className="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center text-xl">📈</div>
           </div>
           <p className="text-3xl font-bold text-gray-900 dark:text-white">{formatCurrency(data?.income ?? 0)}</p>
           <p className="text-gray-400 dark:text-gray-500 text-xs mt-2">Current month</p>
         </div>
 
-        {/* Expenses */}
         <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-6">
           <div className="flex items-center justify-between mb-4">
             <p className="text-gray-500 dark:text-gray-400 text-sm font-medium">Total Expenses</p>
-            <div className="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-xl flex items-center justify-center text-xl">
-              📉
-            </div>
+            <div className="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-xl flex items-center justify-center text-xl">📉</div>
           </div>
           <p className="text-3xl font-bold text-gray-900 dark:text-white">{formatCurrency(data?.expense ?? 0)}</p>
           <p className="text-gray-400 dark:text-gray-500 text-xs mt-2">Current month</p>
         </div>
-
       </div>
 
-      {/* Recent transactions */}
       <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-6">
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-base font-semibold text-gray-900 dark:text-white">Recent Transactions</h2>

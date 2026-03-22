@@ -1,23 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-
-interface Category {
-  id: string;
-  name: string;
-  icon: string;
-  color: string;
-}
-
-interface Transaction {
-  id: string;
-  title: string;
-  amount: string;
-  type: "income" | "expense";
-  date: string;
-  notes: string | null;
-  category: Category | null;
-}
+import type { Category, Transaction } from "@/types";
 
 interface Props {
   editing: Transaction | null;
@@ -76,7 +60,6 @@ export default function TransactionModal({ editing, categories, onSave, onClose,
 
         <div className="space-y-4">
 
-          {/* Type toggle */}
           <div className="flex gap-2">
             {(["expense", "income"] as const).map((type) => (
               <button

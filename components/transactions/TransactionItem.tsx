@@ -1,19 +1,4 @@
-interface Category {
-  id: string;
-  name: string;
-  icon: string;
-  color: string;
-}
-
-interface Transaction {
-  id: string;
-  title: string;
-  amount: string;
-  type: "income" | "expense";
-  date: string;
-  notes: string | null;
-  category: Category | null;
-}
+import type { Transaction } from "@/types";
 
 interface Props {
   transaction: Transaction;

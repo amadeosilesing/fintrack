@@ -1,9 +1,4 @@
-interface Category {
-  id: string;
-  name: string;
-  icon: string;
-  color: string;
-}
+import type { Category } from "@/types";
 
 interface Props {
   category: Category;
