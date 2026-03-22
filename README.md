@@ -1,36 +1,218 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 💰 FinTrack
 
-## Getting Started
+A modern full-stack personal finance manager built with Next.js, TypeScript and PostgreSQL.
 
-First, run the development server:
+---
+
+## 🧠 Overview
+
+FinTrack is a scalable web application that allows users to manage their personal finances efficiently.
+
+Users can:
+
+- Register income and expenses
+- Classify transactions by custom categories
+- Visualize their financial balance
+- Analyze spending patterns with interactive charts
+
+This project demonstrates professional full-stack architecture, secure authentication with JWT, relational database design, and clean code practices.
+
+---
+
+## 🛠 Tech Stack
+
+### Frontend
+
+- Next.js 15 (App Router)
+- TypeScript
+- Tailwind CSS v4
+- Recharts
+
+### Backend
+
+- Next.js API Routes
+- JWT Authentication
+- Drizzle ORM
+
+### Database
+
+- PostgreSQL
+
+### Other Tools
+
+- Git
+- ESLint
+
+---
+
+## 🗄 Database Architecture
+
+Relational data model:
+
+- **Users**
+- **Categories** (belongs to user)
+- **Transactions** (belongs to user and category)
+
+Proper foreign key relationships ensure data integrity and scalability.
+
+---
+
+## 🔐 Authentication
+
+- Secure password hashing using bcrypt
+- JWT-based authentication
+- Login with email or username
+- Protected routes using middleware
+- User-specific data access
+
+---
+
+## 📦 Features
+
+### Authentication
+
+- [x] User registration
+- [x] Login with email or username
+- [x] JWT generation
+- [x] Protected routes
+
+### Transactions
+
+- [x] Create transaction (income / expense)
+- [x] Edit transaction
+- [x] Delete transaction
+- [x] Filter by type (all / income / expense)
+
+### Categories
+
+- [x] Create category with icon and color
+- [x] Edit category
+- [x] Delete category
+
+### Dashboard
+
+- [x] Monthly balance overview
+- [x] Total income and expenses
+- [x] Recent transactions
+
+### Statistics
+
+- [x] Expenses by category (pie chart)
+- [x] Monthly income vs expenses (bar chart)
+- [x] Balance trend (area chart)
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- PostgreSQL
+
+### Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/yourusername/fintrack.git
+cd fintrack
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Create a `.env.local` file in the root directory:
+
+```env
+DATABASE_URL=postgresql://user:password@localhost:5432/fintrack
+JWT_SECRET=your_super_secret_key
+```
+
+4. Create the database:
+
+```sql
+CREATE DATABASE fintrack;
+```
+
+5. Run migrations:
+
+```bash
+npm run db:migrate
+```
+
+6. Seed the database:
+
+```bash
+npm run db:seed
+```
+
+7. Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+8. Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🔑 Environment Variables
 
-## Learn More
+Create a `.env.local` file in the root directory:
 
-To learn more about Next.js, take a look at the following resources:
+```env
+DATABASE_URL=your_postgresql_connection_string
+JWT_SECRET=your_super_secret_key
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+⚠️ Never commit your `.env.local` file.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 📁 Project Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+fintrack/
+├── app/
+│   ├── (auth)/          # Login and register pages
+│   ├── (dashboard)/     # Protected dashboard pages
+│   └── api/             # API routes
+├── components/
+│   ├── categories/
+│   ├── layout/
+│   ├── statistics/
+│   ├── transactions/
+│   └── ui/
+├── db/
+│   ├── index.ts         # Database client
+│   ├── schema.ts        # Drizzle schema
+│   └── seed.ts          # Seed data
+├── hooks/               # Custom React hooks
+├── lib/                 # Auth and middleware utilities
+└── types/               # Shared TypeScript types
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🎯 Purpose of This Project
+
+This project was built to demonstrate professional full-stack development skills, including:
+
+- Modern React architecture with Next.js App Router
+- Backend API design with protected endpoints
+- Relational database modeling with Drizzle ORM
+- Authentication systems with JWT
+- Data visualization with Recharts
+- Clean project structure and reusable components
+- Scalable application patterns
+
+---
+
+## 📌 Author
+
+Amadeo Siles  
+Full Stack Developer
